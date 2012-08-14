@@ -1,12 +1,3 @@
-title:	Stackato Essentials  
-xmp:	CCAttributionShareAlike3Unported  
-author:	Travis Wayne Tilley  
-email:	<mailto:ttilley@gmail.com>  
-copyright:	2012 Travis Wayne Tilley  
-This work is licensed under the Creative Commons  
-Attribution-ShareAlike 3.0 Unported License. To view a copy of this  
-license, visit creativecommons.org. <http://creativecommons.org/licenses/by-sa/3.0/.>  
-
 # Stackato Essentials #
 
 This document is fairly loosely collected at the moment. Hopefully someone will still find it useful while it works its way towards equilibrium. ;)
@@ -23,9 +14,13 @@ This document is fairly loosely collected at the moment. Hopefully someone will 
 
 ### Cloud Controller ###
 
+The Cloud Controller handles all state transitions, manages users/apps/services, and provides the external REST API used by the stackato client (or VMC, should you so desire).
+
 ### Health Manager ###
 
 ### Router ###
+
+The router handles all HTTP traffic into the cluster and maintains distributed routing state. The router responds to realtime updates from DEA nodes. Crude load balancing is performed when an app has multiple instances.
 
 ### NATS ###
 
@@ -35,7 +30,7 @@ Message passing, via NATS, is the foundation of the Cloud Foundry architecture. 
 
 #### Cloud Controller ####
 
-* Publish:	dea.discover
+* Publish: dea.discover
 * Publish: dea.find.droplet
 * Publish: dea.locate
 * Publish: dea.start
@@ -204,3 +199,12 @@ In the scenario of a DEA node crash:
 4. As DEA nodes reply, application instances will be started on these new DEA nodes
 
 Note that as part of the Prealloc/DEA init that occurs when starting the DEA service, previously existing linux containers are cleaned up and removed. If you need any of that data for debugging or analysis then you will want to copy it to another location than /lxc/containers or /mnt/lxc/containers.
+
+### Inotify ###
+
+````
+fs.inotify.max_user_instances = 4096
+fs.inotify.max_user_watches = 32768
+fs.inotify.max_queued_events = 65536
+````
+
