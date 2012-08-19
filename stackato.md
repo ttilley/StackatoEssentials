@@ -1,10 +1,19 @@
 # Stackato Essentials #
 
-This document is fairly loosely collected at the moment. Hopefully someone will still find it useful while it works its way towards equilibrium. ;)
+My personal goal with this document is to provide a somewhat more gentle introduction to Cloud Foundry and Stackato than you might otherwise receive, as well as to shine light on components and functionality that might not be documented in sufficient detail elsewhere.
+
+If you find any of the information here useful, you can thank me by [providing feedback](https://github.com/ttilley/StackatoEssentials/issues). *Please* feel free to fork, improve, and submit pull requests.
 
 ## Core Components ##
 
+![General Architecture](http://docs.stackato.com/_images/stackato-architecture-diagram.png "stackato general architecture")
+
 ### Doozerd ###
+
+> Doozer is a highly-available, completely consistent store for small amounts of extremely important data. When the data changes, it can notify connected clients immediately (no polling), making it ideal for infrequently-updated data for which clients want real-time updates.
+> <https://github.com/ActiveState/doozerd>
+
+Doozer is a [recent addition](http://www.activestate.com/blog/2012/08/doozer-distributed-configuration-used-heroku-and-stackato) to the stack that is unique to Stackato, replacing most configuration sources used by other implementations of Cloud Foundry. In standard Cloud Foundry one might SSH into the machine running a service to configure it (via YAML files), and restart said service to pick to those configuration changes. In Stackato you are able to configure the entire cluster from a single location and services react to configuration changes themselves. You are also able to query doozer for information on currently connected nodes.
 
 ### Prealloc ###
 
@@ -20,7 +29,9 @@ The Cloud Controller handles all state transitions, manages users/apps/services,
 
 ### Router ###
 
-The router handles all HTTP traffic into the cluster and maintains distributed routing state. The router responds to realtime updates from DEA nodes. Crude load balancing is performed when an app has multiple instances.
+The router handles all HTTP traffic into the cluster and maintains distributed routing state. The router responds to realtime updates from DEA nodes. Load balancing is performed when an app has multiple instances.
+
+There are currently two implementations of the router component in Stackato (as of 2.2). In order to make use of websockets, one must use router2g rather than the default router.
 
 ### NATS ###
 
@@ -97,7 +108,9 @@ Message passing, via NATS, is the foundation of the Cloud Foundry architecture. 
 
 ### Data Services ###
 
-All data services, with the notable exception of the filesystem service, come as three subcomponents: Node, Provisioner, and Gateway. The Node implements the actual service backend. The provisioner handles various logic around provisioning and unprovisioning a specific instance of the service. The gateway provides a REST interface to the provisioner. In practice the provisioner and gateway are usually implemented as a singular daemon.
+All data services have three subcomponents: Node, Provisioner, and Gateway. The Node implements the actual service backend. The provisioner handles various logic around provisioning and unprovisioning a specific instance of the service. The gateway provides a REST interface to the provisioner. In practice the provisioner and gateway are usually implemented as a singular daemon.
+
+Prior to Stackato 2.2, the filesystem service was a special exception to this rule. It did not have a gateway, and was assumed to exist on a singular node. This limitation has since been lifted.
 
 ## Application Deployment Flow ##
 
@@ -120,7 +133,7 @@ This is a shortened version of what happens when you deploy an application:
 
 ### Fog ###
 
-````ruby
+```
 require 'rubygems'
 require 'fog'
 
@@ -156,8 +169,7 @@ curl -k "https://api.$(hostname).local/stackato/license" \
      -d "email=#{STACKATO_EMAIL}&password=#{STACKATO_PASSWORD}&unix_password=#{STACKATO_PASSWORD}"
 EOF
 )
-
-````
+```
 
 ### Chef ###
 
