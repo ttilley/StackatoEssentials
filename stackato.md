@@ -175,6 +175,118 @@ EOF
 
 ### CloudInit ###
 
+cloud-init is a highly configurable system for handling early initialization of a cloud instance. More information on cloud-init can be found at the [project's launchpad](https://launchpad.net/cloud-init). There is also [a screencast](http://www.youtube.com/watch?v=-zL3BdbKyGY) covering the cloud-config portion of cloud-init on the [ubuntucloud youtube channel](http://www.youtube.com/user/ubuntucloud).
+
+#### Data Sources
+
+The cloud-init package supports searching multiple "Data Sources" for information that can be used to configure a particular cloud instance. The list of potential sources is configured in the `datasource_list` key, with the first entry found to be valid becoming the data source for that run. This value, as well as any detailed configuration in `datasource`, should be set locally in `cloud.cfg` or injected early via some other means (like the kernel cmdline). Any Ubuntu based EC2 AMIs will contain EC2 as a data source by default, otherwise the list will contain `["NoCloud", "ConfigDrive", "OVF", "MAAS"]`.
+
+*Note: If the `datasources_list` value from `/etc/cloud/cloud.cfg` is not being used, check for an `/etc/cloud/cloud.cfg.d/90_dpkg.cfg` and run `dpkg-reconfigure cloud-init` if found.*
+
+Note: Selecting the "Ec2" data source may result in lengthy boot times if the EC2 metadata API is unavailable. If you firewall off the metadata API for security purposes and do not wish to use it with cloud-init, make sure to edit `datasource_list`. For a convenient method of removing access to the metadata API after cloud-init has retrieved any necessary data, enable the `disable-ec2-metadata` module.
+
+If you are using a deployment platform that provides some level of EC2 compatibility then you may want to ensure that the metadata IP (169.254.169.254) is reachable and that the HTTP endpoints (ex: /2009-04-04/meta-data/instance-id) are available ahead of time. For additional configurability, you also have the option of manually setting `metadata_urls` on the data source:
+
+```
+datasource:
+  Ec2:
+    metadata_urls:
+      - http://169.254.169.254:80
+      - http://instance-data:8773
+```
+
+While CloudStack provides a metadata API with similarities to the one provided by EC2, there are notable differences that make it incompatible. In particular, the metadata API will be available via the default gateway and thus cannot be sanely configured ahead of time. There is a seperate "CloudStack" datasource that handles these differences.
+
+Valid data sources:
+
+  * **NoCloud**: reads info from `/var/lib/cloud/seed` only
+  * **ConfigDrive**: reads data from OpenStack Config Drive
+  * **OVF**: reads data from OVF Transports
+  * **MAAS**: reads data from Ubuntu MAAS
+  * **EC2**: reads data from EC2 metadata service
+  * **CloudStack**: reads data from CloudStack metadata service
+
+#### Frequency
+
+Scripts and configuration directives may be acted upon with the following frequencies:
+
+1. once **ever**
+2. once per instance
+3. once per boot (always)
+
+You can usually assume that the default frequency for an action is once per instance. On every run, cloud-init will check what the current "instance id" is and compare this value with the previously recorded id. This makes it easy to do things like clone an existing system and ensure that a base set of actions are performed when the clone comes online. You may, for example, delete any pre-existing chef configuration and re-register as a new client.
+
+*Warning: On EC2, a full shutdown will result in your VM receiving a new instance-id.*
+
+The following modules, however, are loaded with a default frequency of "always":
+
+* bootcmd
+* disable-ec2-metadata
+* final-message
+* resizefs
+* scripts-per-boot
+* update_etc_hosts
+* update_hostname
+
+Note that without accompanying configuration, a module that is loaded on each boot will still have no effect on the system.
+
+It is possible to change the run frequency of a module. Under the module section where it is defined, replace the string name with an array of `[name, frequency, arguments]`. Within this context, frequency must be named `once-per-instance`, `always`, or `once`.
+
+#### Order of Execution
+
+The cloud-init package is run in several stages during bootstrap:
+
+* root filesystem is mounted
+* cloud-init-local runs (**cloud-init start-local**)
+  * purge any cached data and metadata
+  * if a valid (non-network) data source is found then perform a normal start using that data source
+* all configured network interfaces come up
+* cloud-init runs (**cloud-init start**)
+  * check the kernel cmdline for a `cloud-config-url` parameter. If present, fetch and save the content of this URL to `/etc/cloud/cloud.cfg.d/91_kernel_cmdline_url.cfg`
+  * ensure /var/lib/cloud and subdirectories are created
+  * set the current instance id
+  * update cached user data and metadata
+  * the `cloud_init_modules` value from cloud-config is read and modules are run in the order that they appear. these are, by default:
+    1. bootcmd
+    2. resizefs
+    3. set_hostname
+    4. update_hostname
+    5. update_etc_hosts
+    6. ca-certs
+    7. rsyslog
+    8. ssh
+* any remaining filesystems will be mounted by this point
+* rsyslog will be running by this point
+* cloud-config runs (**cloud-init-cfg all config**)
+  * the `cloud_config_modules` value from cloud-config is read and modules are run in the order that they appear. these are, by default:
+    1. mounts
+    2. ssh-import-id
+    3. locale
+    4. set-passwords
+    5. grub-dpkg
+    6. apt-pipelining
+    7. apt-update-upgrade
+    8. landscape
+    9. timezone
+    10. puppet
+    11. chef
+    12. salt-minion
+    13. mcollective
+    14. disable-ec2-metadata
+    15. runcmd
+    16. byobu
+* all runlevel rc scripts run
+* cloud-final runs (**cloud-init-cfg all final**)
+  * the `cloud_final_modules` value from cloud-config is read and modules are run in the order that they appear. these are, by default:
+    1. rightscale_userdata
+    2. scripts-per-once
+    3. scripts-per-boot
+    4. scripts-per-instance
+    5. scripts-user
+    6. keys-to-console
+    7. phone-home
+    8. final-message
+
 #### risks ####
 
 ## Monitoring ##
