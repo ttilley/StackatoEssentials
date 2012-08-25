@@ -31,11 +31,11 @@
 
 <p>If you find any of the information here useful, you can thank me by <a href="https://github.com/ttilley/StackatoEssentials/issues">providing feedback</a>. <em>Please</em> feel free to fork, improve, and submit pull requests.</p>
 
-<h2>Core Components {#core_components}</h2>
+<h2 id="core_components">Core Components</h2>
 
 <p><img src="http://docs.stackato.com/_images/stackato-architecture-diagram.png" alt="General Architecture" title="stackato general architecture"></p>
 
-<h3>Doozerd {#doozerd}</h3>
+<h3 id="doozerd">Doozerd</h3>
 
 <blockquote>
 <p>Doozer is a highly-available, completely consistent store for small amounts of extremely important data. When the data changes, it can notify connected clients immediately (no polling), making it ideal for infrequently-updated data for which clients want real-time updates.<br><a href="https://github.com/ActiveState/doozerd">https://github.com/ActiveState/doozerd</a></p>
@@ -43,25 +43,25 @@
 
 <p>Doozer is a <a href="http://www.activestate.com/blog/2012/08/doozer-distributed-configuration-used-heroku-and-stackato">recent addition</a> to the stack that is unique to Stackato, replacing most configuration sources used by other implementations of Cloud Foundry. In standard Cloud Foundry one might SSH into the machine running a service to configure it (via YAML files), and restart said service to pick to those configuration changes. In Stackato you are able to configure the entire cluster from a single location and services react to configuration changes themselves. You are also able to query doozer for information on currently connected nodes.</p>
 
-<h3>Prealloc {#prealloc}</h3>
+<h3 id="prealloc">Prealloc</h3>
 
-<h3>Stager {#stager}</h3>
+<h3 id="stager">Stager</h3>
 
-<h3>DEA {#dea}</h3>
+<h3 id="dea">DEA</h3>
 
-<h3>Cloud Controller {#cloud_controller}</h3>
+<h3 id="cloud_controller">Cloud Controller</h3>
 
 <p>The Cloud Controller handles all state transitions, manages users/apps/services, and provides the external REST API used by the stackato client (or VMC, should you so desire).</p>
 
-<h3>Health Manager {#health_manager}</h3>
+<h3 id="health_manager">Health Manager</h3>
 
-<h3>Router {#router}</h3>
+<h3 id="router">Router</h3>
 
 <p>The router handles all HTTP traffic into the cluster and maintains distributed routing state. The router responds to realtime updates from DEA nodes. Load balancing is performed when an app has multiple instances.</p>
 
 <p>There are currently two implementations of the router component in Stackato (as of 2.2). In order to make use of websockets, one must use router2g rather than the default router.</p>
 
-<h3>NATS {#nats}</h3>
+<h3 id="nats">NATS</h3>
 
 <p>NATS is a lightweight cloud messaging system by Derek Collison, who was previously Chief Architect for TIBCO's messaging products.</p>
 
@@ -134,13 +134,13 @@
 
 <ul>
 <li>Subscribe: vcap.stager.{queue}</li>
-</ul><h3>Data Services {#data_services}</h3>
+</ul><h3 id="data_services">Data Services</h3>
 
 <p>All data services have three subcomponents: Node, Provisioner, and Gateway. The Node implements the actual service backend. The provisioner handles various logic around provisioning and unprovisioning a specific instance of the service. The gateway provides a REST interface to the provisioner. In practice the provisioner and gateway are usually implemented as a singular daemon.</p>
 
 <p>Prior to Stackato 2.2, the filesystem service was a special exception to this rule. It did not have a gateway, and was assumed to exist on a singular node. This limitation has since been lifted.</p>
 
-<h2>Application Deployment Flow {#application_deployment_flow}</h2>
+<h2 id="application_deployment_flow">Application Deployment Flow</h2>
 
 <p>This is a shortened version of what happens when you deploy an application:</p>
 
@@ -155,11 +155,11 @@
 <li>droplet is deployed to the DEA</li>
 <li>DEA starts the app</li>
 <li>upon successful start, the router creates a route</li>
-</ol><h2>Cluster Setup {#cluster_setup}</h2>
+</ol><h2 id="cluster_setup">Cluster Setup</h2>
 
-<h3>Roles {#roles}</h3>
+<h3 id="roles">Roles</h3>
 
-<h3>Fog {#fog}</h3>
+<h3 id="fog">Fog</h3>
 
 <div class="highlight"><pre><span class="nb">require</span> <span class="s1">'rubygems'</span>
 <span class="nb">require</span> <span class="s1">'fog'</span>
@@ -198,13 +198,13 @@
 <span class="p">)</span>
 </pre></div>
 
-<h3>Chef {#chef}</h3>
+<h3 id="chef">Chef</h3>
 
-<h3>CloudInit {#cloud_init}</h3>
+<h3 id="cloud_init">CloudInit</h3>
 
 <p>cloud-init is a highly configurable system for handling early initialization of a cloud instance. More information on cloud-init can be found at the <a href="https://launchpad.net/cloud-init">project's launchpad</a>. There is also <a href="http://www.youtube.com/watch?v=-zL3BdbKyGY">a screencast</a> covering the cloud-config portion of cloud-init on the <a href="http://www.youtube.com/user/ubuntucloud">ubuntucloud youtube channel</a>.</p>
 
-<h4>Data Sources {#cloud_init_data_sources}</h4>
+<h4 id="cloud_init_data_sources">Data Sources</h4>
 
 <p>The cloud-init package supports searching multiple "Data Sources" for information that can be used to configure a particular cloud instance. The list of potential sources is configured in the <code>datasource_list</code> key, with the first entry found to be valid becoming the data source for that run. This value, as well as any detailed configuration in <code>datasource</code>, should be set locally in <code>cloud.cfg</code> or injected early via some other means (like the kernel cmdline). Any Ubuntu based EC2 AMIs will contain EC2 as a data source by default, otherwise the list will contain <code>["NoCloud", "ConfigDrive", "OVF", "MAAS"]</code>.</p>
 
@@ -238,7 +238,7 @@
 <strong>EC2</strong>: reads data from EC2 metadata service</li>
 <li>
 <strong>CloudStack</strong>: reads data from CloudStack metadata service</li>
-</ul><h4>Frequency {#cloud_init_frequency}</h4>
+</ul><h4 id="cloud_init_frequency">Frequency</h4>
 
 <p>Scripts and configuration directives may be acted upon with the following frequencies:</p>
 
@@ -265,7 +265,7 @@
 
 <p>It is possible to change the run frequency of a module. Under the module section where it is defined, replace the string name with an array of <code>[name, frequency, arguments]</code>. Within this context, frequency must be named <code>once-per-instance</code>, <code>always</code>, or <code>once</code>.</p>
 
-<h4>Order of Execution {#cloud_init_order_of_execution}</h4>
+<h4 id="cloud_init_order_of_execution">Order of Execution</h4>
 
 <p>The cloud-init package is run in several stages during bootstrap:</p>
 
@@ -349,19 +349,19 @@
 </li>
 </ul>
 </li>
-</ul><h4>risks {#risks}</h4>
+</ul><h4 id="risks">risks</h4>
 
 <p>Please be aware that the metadata service has no concept of access control. An application running on a DEA node has the same level of access to your metadata as anything else running on that machine. There are multiple methods of hiding sensitive information from prying eyes, such as include-once directives that point to single-use URLs. The easiest method by far, however, is enabling the <code>disable_ec2_metadata</code> option in your cloud-config. The disable_ec2_metadata module will run the following: <code>route add -host 169.254.169.254 reject</code>.</p>
 
-<h2>Monitoring {#monitoring}</h2>
+<h2 id="monitoring">Monitoring</h2>
 
-<h3>Ganglia {#ganglia}</h3>
+<h3 id="ganglia">Ganglia</h3>
 
-<h2>Auto-Scaling {#auto_scaling}</h2>
+<h2 id="auto_scaling">Auto-Scaling</h2>
 
-<h2>Troubleshooting {#troubleshooting}</h2>
+<h2 id="troubleshooting">Troubleshooting</h2>
 
-<h3>Application Crash {#application_crash}</h3>
+<h3 id="application_crash">Application Crash</h3>
 
 <p>If an application crashes, the linux container for that app sticks around for about an hour by default before getting cleaned up. This allows you to ssh into the container and perform any necessary debugging. Logs will also be available to you this way, even if they are not directly available via the dashboard any longer.</p>
 
@@ -379,7 +379,7 @@
 <li>Routers remove the crashed app from the routing table</li>
 <li>The Health Manager notifies the Cloud Controller</li>
 <li>The Cloud Controller re-starts the instance</li>
-</ol><h3>DEA Crash {#dea_crash}</h3>
+</ol><h3 id="dea_crash">DEA Crash</h3>
 
 <p>In the scenario of a DEA node crash:</p>
 
