@@ -1,408 +1,587 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Stackato Essentials by ttilley</title>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Stackato Essentials by ttilley</title>
+  <meta name="viewport" content="width=device-width">
 
-    <!--[if lt IE 9]>
+  <link rel="stylesheet" href="stylesheets/styles.css">
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+
+  <script src="javascripts/scale.fix.js"></script>
+  <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <h1>Stackato Essentials</h1>
+      <p>notes, tips, and useful information</p>
+
+      <p class="view">
+        <a href="https://github.com/ttilley/StackatoEssentials">View the Project on GitHub
+        <small>ttilley/StackatoEssentials</small></a>
+      </p>
+
+      <ul>
+        <li><a href="https://github.com/ttilley/StackatoEssentials/zipball/master">Download <strong>ZIP File</strong></a></li>
+        <li><a href="https://github.com/ttilley/StackatoEssentials/tarball/master">Download <strong>TAR Ball</strong></a></li>
+        <li><a href="https://github.com/ttilley/StackatoEssentials">View On <strong>GitHub</strong></a></li>
+      </ul>
+    </header>
+    
+    <!--[if lt IE 8]>
+      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
     <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Stackato Essentials</h1>
-        <p>notes, tips, and useful information</p>
-        <p class="view"><a href="https://github.com/ttilley/StackatoEssentials">View the Project on GitHub <small>ttilley/StackatoEssentials</small></a></p>
-        <ul>
-          <li><a href="https://github.com/ttilley/StackatoEssentials/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/ttilley/StackatoEssentials/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/ttilley/StackatoEssentials">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <p>My personal goal with this document is to provide a somewhat more gentle introduction to Cloud Foundry and Stackato than you might otherwise receive, as well as to shine light on components and functionality that might not be documented in sufficient detail elsewhere.</p>
 
-<p>If you find any of the information here useful, you can thank me by <a href="https://github.com/ttilley/StackatoEssentials/issues">providing feedback</a>. <em>Please</em> feel free to fork, improve, and submit pull requests.</p>
+    <section>
+      <p>My personal goal with this document is to provide a somewhat more gentle introduction to Cloud Foundry and
+      Stackato than you might otherwise receive, as well as to shine light on components and functionality that might
+      not be documented in sufficient detail elsewhere.</p>
 
-<h2 id="core_components">Core Components</h2>
+      <p>If you find any of the information here useful, you can thank me by <a href=
+      "https://github.com/ttilley/StackatoEssentials/issues">providing feedback</a>. <em>Please</em> feel free to fork,
+      improve, and submit pull requests.</p>
 
-<p><img src="http://docs.stackato.com/_images/stackato-architecture-diagram.png" alt="General Architecture" title="stackato general architecture"></p>
+      <h2 id="core_components">Core Components</h2>
 
-<h3 id="doozerd">Doozerd</h3>
+      <p><img src="http://docs.stackato.com/_images/stackato-architecture-diagram.png" alt="General Architecture"
+      title="stackato general architecture"></p>
 
-<blockquote>
-<p>Doozer is a highly-available, completely consistent store for small amounts of extremely important data. When the data changes, it can notify connected clients immediately (no polling), making it ideal for infrequently-updated data for which clients want real-time updates.<br><a href="https://github.com/ActiveState/doozerd">https://github.com/ActiveState/doozerd</a></p>
-</blockquote>
+      <h3 id="doozerd">Doozerd</h3>
 
-<p>Doozer is a <a href="http://www.activestate.com/blog/2012/08/doozer-distributed-configuration-used-heroku-and-stackato">recent addition</a> to the stack that is unique to Stackato, replacing most configuration sources used by other implementations of Cloud Foundry. In standard Cloud Foundry one might SSH into the machine running a service to configure it (via YAML files), and restart said service to pick to those configuration changes. In Stackato you are able to configure the entire cluster from a single location and services react to configuration changes themselves. You are also able to query doozer for information on currently connected nodes.</p>
+      <blockquote>
+        <p>Doozer is a highly-available, completely consistent store for small amounts of extremely important data.
+        When the data changes, it can notify connected clients immediately (no polling), making it ideal for
+        infrequently-updated data for which clients want real-time updates.<br>
+        <a href="https://github.com/ActiveState/doozerd">https://github.com/ActiveState/doozerd</a></p>
+      </blockquote>
 
-<h3 id="prealloc">Prealloc</h3>
+      <p>Doozer is a <a href=
+      "http://www.activestate.com/blog/2012/08/doozer-distributed-configuration-used-heroku-and-stackato">recent
+      addition</a> to the stack that is unique to Stackato, replacing most configuration sources used by other
+      implementations of Cloud Foundry. In standard Cloud Foundry one might SSH into the machine running a service to
+      configure it (via YAML files), and restart said service to pick to those configuration changes. In Stackato you
+      are able to configure the entire cluster from a single location and services react to configuration changes
+      themselves. You are also able to query doozer for information on currently connected nodes.</p>
 
-<h3 id="stager">Stager</h3>
+      <h3 id="prealloc">Prealloc</h3>
 
-<h3 id="dea">DEA</h3>
+      <h3 id="stager">Stager</h3>
 
-<h3 id="cloud_controller">Cloud Controller</h3>
+      <h3 id="dea">DEA</h3>
 
-<p>The Cloud Controller handles all state transitions, manages users/apps/services, and provides the external REST API used by the stackato client (or VMC, should you so desire).</p>
+      <h3 id="cloud_controller">Cloud Controller</h3>
 
-<h3 id="health_manager">Health Manager</h3>
+      <p>The Cloud Controller handles all state transitions, manages users/apps/services, and provides the external
+      REST API used by the stackato client (or VMC, should you so desire).</p>
 
-<h3 id="router">Router</h3>
+      <h3 id="health_manager">Health Manager</h3>
 
-<p>The router handles all HTTP traffic into the cluster and maintains distributed routing state. The router responds to realtime updates from DEA nodes. Load balancing is performed when an app has multiple instances.</p>
+      <h3 id="router">Router</h3>
 
-<p>There are currently two implementations of the router component in Stackato (as of 2.2). In order to make use of websockets, one must use router2g rather than the default router.</p>
+      <p>The router handles all HTTP traffic into the cluster and maintains distributed routing state. The router
+      responds to realtime updates from DEA nodes. Load balancing is performed when an app has multiple instances.</p>
 
-<h3 id="nats">NATS</h3>
+      <p>There are currently two implementations of the router component in Stackato (as of 2.2). In order to make use
+      of websockets, one must use router2g rather than the default router.</p>
 
-<p>NATS is a lightweight cloud messaging system by Derek Collison, who was previously Chief Architect for TIBCO's messaging products.</p>
+      <h3 id="nats">NATS</h3>
 
-<p>Message passing, via NATS, is the foundation of the Cloud Foundry architecture. It is used for addressing and component discovery, command and control, heartbeats, and various other tasks.</p>
+      <p>NATS is a lightweight cloud messaging system by Derek Collison, who was previously Chief Architect for TIBCO's
+      messaging products.</p>
 
-<h4>Cloud Controller Messages</h4>
+      <p>Message passing, via NATS, is the foundation of the Cloud Foundry architecture. It is used for addressing and
+      component discovery, command and control, heartbeats, and various other tasks.</p>
 
-<ul>
-<li>Publish: dea.discover</li>
-<li>Publish: dea.find.droplet</li>
-<li>Publish: dea.locate</li>
-<li>Publish: dea.start</li>
-<li>Publish: dea.stop</li>
-<li>Publish: dea.update</li>
-<li>Publish: droplet.updated</li>
-<li>Publish: healthmanager.health</li>
-<li>Publish: healthmanager.status</li>
-<li>Publish: router.register</li>
-<li>Publish: router.unregister</li>
-<li>Publish: vcap.cc.events</li>
-<li>Publish: vcap.component.announce</li>
-<li>Publish: vcap.stager.{queue}</li>
-<li>Subscribe: cloudcontroller.bulk.credentials</li>
-<li>Subscribe: cloudcontrollers.hm.requests</li>
-<li>Subscribe: dea.advertise</li>
-<li>Subscribe: router.start</li>
-<li>Subscribe: vcap.component.discover</li>
-</ul><h4>DEA Messages</h4>
+      <h4>Cloud Controller Messages</h4>
+      <ul>
+        <li>Publish: dea.discover</li>
+        <li>Publish: dea.find.droplet</li>
+        <li>Publish: dea.locate</li>
+        <li>Publish: dea.start</li>
+        <li>Publish: dea.stop</li>
+        <li>Publish: dea.update</li>
+        <li>Publish: droplet.updated</li>
+        <li>Publish: healthmanager.health</li>
+        <li>Publish: healthmanager.status</li>
+        <li>Publish: router.register</li>
+        <li>Publish: router.unregister</li>
+        <li>Publish: vcap.cc.events</li>
+        <li>Publish: vcap.component.announce</li>
+        <li>Publish: vcap.stager.{queue}</li>
+        <li>Subscribe: cloudcontroller.bulk.credentials</li>
+        <li>Subscribe: cloudcontrollers.hm.requests</li>
+        <li>Subscribe: dea.advertise</li>
+        <li>Subscribe: router.start</li>
+        <li>Subscribe: vcap.component.discover</li>
+      </ul>
 
-<ul>
-<li>Publish: dea.advertise</li>
-<li>Publish: dea.heartbeat</li>
-<li>Publish: dea.start</li>
-<li>Publish: droplet.exited</li>
-<li>Publish: router.register</li>
-<li>Publish: router.unregister</li>
-<li>Publish: vcap.component.announce</li>
-<li>Subscribe: dea.discover</li>
-<li>Subscribe: dea.find.droplet</li>
-<li>Subscribe: dea.locate</li>
-<li>Subscribe: dea.status</li>
-<li>Subscribe: dea.stop</li>
-<li>Subscribe: dea.update</li>
-<li>Subscribe: dea.{uuid}.start</li>
-<li>Subscribe: droplet.status</li>
-<li>Subscribe: healthmanager.start</li>
-<li>Subscribe: router.start</li>
-<li>Subscribe: vcap.component.discover</li>
-</ul><h4>Health Manager Messages</h4>
+      <h4>DEA Messages</h4>
+      <ul>
+        <li>Publish: dea.advertise</li>
+        <li>Publish: dea.heartbeat</li>
+        <li>Publish: dea.start</li>
+        <li>Publish: droplet.exited</li>
+        <li>Publish: router.register</li>
+        <li>Publish: router.unregister</li>
+        <li>Publish: vcap.component.announce</li>
+        <li>Subscribe: dea.discover</li>
+        <li>Subscribe: dea.find.droplet</li>
+        <li>Subscribe: dea.locate</li>
+        <li>Subscribe: dea.status</li>
+        <li>Subscribe: dea.stop</li>
+        <li>Subscribe: dea.update</li>
+        <li>Subscribe: dea.{uuid}.start</li>
+        <li>Subscribe: droplet.status</li>
+        <li>Subscribe: healthmanager.start</li>
+        <li>Subscribe: router.start</li>
+        <li>Subscribe: vcap.component.discover</li>
+      </ul>
 
-<ul>
-<li>Publish: cloudcontrollers.hm.requests</li>
-<li>Publish: healthmanager.start</li>
-<li>Publish: vcap.component.announce</li>
-<li>Subscribe: dea.heartbeat</li>
-<li>Subscribe: droplet.exited</li>
-<li>Subscribe: droplet.updated</li>
-<li>Subscribe: healthmanager.health</li>
-<li>Subscribe: healthmanager.status</li>
-<li>Subscribe: vcap.component.discover</li>
-</ul><h4>Router Messages</h4>
+      <h4>Health Manager Messages</h4>
+      <ul>
+        <li>Publish: cloudcontrollers.hm.requests</li>
+        <li>Publish: healthmanager.start</li>
+        <li>Publish: vcap.component.announce</li>
+        <li>Subscribe: dea.heartbeat</li>
+        <li>Subscribe: droplet.exited</li>
+        <li>Subscribe: droplet.updated</li>
+        <li>Subscribe: healthmanager.health</li>
+        <li>Subscribe: healthmanager.status</li>
+        <li>Subscribe: vcap.component.discover</li>
+      </ul>
 
-<ul>
-<li>Publish: router.start</li>
-<li>Publish: vcap.component.announce</li>
-<li>Subscribe: router.register</li>
-<li>Subscribe: router.unregister</li>
-<li>Subscribe: vcap.component.discover</li>
-</ul><h4>Stager Messages</h4>
+      <h4>Router Messages</h4>
+      <ul>
+        <li>Publish: router.start</li>
+        <li>Publish: vcap.component.announce</li>
+        <li>Subscribe: router.register</li>
+        <li>Subscribe: router.unregister</li>
+        <li>Subscribe: vcap.component.discover</li>
+      </ul>
 
-<ul>
-<li>Subscribe: vcap.stager.{queue}</li>
-</ul><h3 id="data_services">Data Services</h3>
+      <h4>Stager Messages</h4>
+      <ul>
+        <li>Subscribe: vcap.stager.{queue}</li>
+      </ul>
 
-<p>All data services have three subcomponents: Node, Provisioner, and Gateway. The Node implements the actual service backend. The provisioner handles various logic around provisioning and unprovisioning a specific instance of the service. The gateway provides a REST interface to the provisioner. In practice the provisioner and gateway are usually implemented as a singular daemon.</p>
+      <h3 id="data_services">Data Services</h3>
 
-<p>Prior to Stackato 2.2, the filesystem service was a special exception to this rule. It did not have a gateway, and was assumed to exist on a singular node. This limitation has since been lifted.</p>
+      <p>All data services have three subcomponents: Node, Provisioner, and Gateway. The Node implements the actual
+      service backend. The provisioner handles various logic around provisioning and unprovisioning a specific instance
+      of the service. The gateway provides a REST interface to the provisioner. In practice the provisioner and gateway
+      are usually implemented as a singular daemon.</p>
 
-<h2 id="application_deployment_flow">Application Deployment Flow</h2>
+      <p>Prior to Stackato 2.2, the filesystem service was a special exception to this rule. It did not have a gateway,
+      and was assumed to exist on a singular node. This limitation has since been lifted.</p>
 
-<p>This is a shortened version of what happens when you deploy an application:</p>
+      <h2 id="application_deployment_flow">Application Deployment Flow</h2>
 
-<ol>
-<li>stackato push</li>
-<li>framework detection</li>
-<li>create app in CloudController</li>
-<li>framework staging plugin</li>
-<li>droplet creation</li>
-<li>request DEA for app</li>
-<li>an available DEA node responds</li>
-<li>droplet is deployed to the DEA</li>
-<li>DEA starts the app</li>
-<li>upon successful start, the router creates a route</li>
-</ol><h2 id="cluster_setup">Cluster Setup</h2>
+      <p>This is a shortened version of what happens when you deploy an application:</p>
 
-<h3 id="roles">Roles</h3>
+      <ol>
+        <li>stackato push</li>
+        <li>framework detection</li>
+        <li>create app in CloudController</li>
+        <li>framework staging plugin</li>
+        <li>droplet creation</li>
+        <li>request DEA for app</li>
+        <li>an available DEA node responds</li>
+        <li>droplet is deployed to the DEA</li>
+        <li>DEA starts the app</li>
+        <li>upon successful start, the router creates a route</li>
+      </ol>
 
-<h3 id="fog">Fog</h3>
+      <h2 id="cluster_setup">Cluster Setup</h2>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'rubygems'</span>
+      <h3 id="roles">Roles</h3>
+
+      <h3 id="fog">Fog</h3>
+
+      <div class="highlight">
+        <pre>
+<span class="nb">require</span> <span class="s1">'rubygems'</span>
 <span class="nb">require</span> <span class="s1">'fog'</span>
 
 <span class="no">STACKATO_V207_AMI</span>       <span class="o">=</span> <span class="s2">"ami-595bf530"</span>
 
-<span class="no">AWS_ACCESS_KEY_ID</span>       <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"AWS_ACCESS_KEY_ID"</span><span class="o">]</span>
-<span class="no">AWS_SECRET_ACCESS_KEY</span>   <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"AWS_SECRET_ACCESS_KEY"</span><span class="o">]</span>
-<span class="no">EC2_REGION</span>              <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"EC2_REGION"</span><span class="o">]</span>             <span class="o">||</span> <span class="s2">"us-east-1"</span>
-<span class="no">EC2_AVAILABILITY_ZONE</span>   <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"EC2_AVAILABILITY_ZONE"</span><span class="o">]</span>  <span class="o">||</span> <span class="s2">"us-east-1d"</span>
+<span class="no">AWS_ACCESS_KEY_ID</span>       <span class="o">=</span> <span class="no">ENV</span><span class=
+"o">[</span><span class="s2">"AWS_ACCESS_KEY_ID"</span><span class="o">]</span>
+<span class="no">AWS_SECRET_ACCESS_KEY</span>   <span class="o">=</span> <span class="no">ENV</span><span class=
+"o">[</span><span class="s2">"AWS_SECRET_ACCESS_KEY"</span><span class="o">]</span>
+<span class="no">EC2_REGION</span>              <span class="o">=</span> <span class="no">ENV</span><span class=
+"o">[</span><span class="s2">"EC2_REGION"</span><span class="o">]</span>             <span class=
+"o">||</span> <span class="s2">"us-east-1"</span>
+<span class="no">EC2_AVAILABILITY_ZONE</span>   <span class="o">=</span> <span class="no">ENV</span><span class=
+"o">[</span><span class="s2">"EC2_AVAILABILITY_ZONE"</span><span class="o">]</span>  <span class=
+"o">||</span> <span class="s2">"us-east-1d"</span>
 
-<span class="no">STACKATO_EMAIL</span>          <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"STACKATO_EMAIL"</span><span class="o">]</span>         <span class="o">||</span> <span class="s2">"stackato@stackato.local"</span>
-<span class="no">STACKATO_PASSWORD</span>       <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s2">"STACKATO_PASSWORD"</span><span class="o">]</span>      <span class="o">||</span> <span class="s2">"stackato"</span>
+<span class="no">STACKATO_EMAIL</span>          <span class="o">=</span> <span class="no">ENV</span><span class=
+"o">[</span><span class="s2">"STACKATO_EMAIL"</span><span class="o">]</span>         <span class=
+"o">||</span> <span class="s2">"stackato@stackato.local"</span>
+<span class="no">STACKATO_PASSWORD</span>       <span class="o">=</span> <span class="no">ENV</span><span class=
+"o">[</span><span class="s2">"STACKATO_PASSWORD"</span><span class="o">]</span>      <span class=
+"o">||</span> <span class="s2">"stackato"</span>
 
-<span class="n">connection</span> <span class="o">=</span> <span class="no">Fog</span><span class="o">::</span><span class="no">Compute</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
-  <span class="ss">:provider</span>               <span class="o">=&gt;</span> <span class="ss">:AWS</span><span class="p">,</span>
-  <span class="ss">:aws_access_key_id</span>      <span class="o">=&gt;</span> <span class="no">AWS_ACCESS_KEY_ID</span><span class="p">,</span>
-  <span class="ss">:aws_secret_access_key</span>  <span class="o">=&gt;</span> <span class="no">AWS_SECRET_ACCESS_KEY</span><span class="p">,</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="no">Fog</span><span class=
+"o">::</span><span class="no">Compute</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
+  <span class="ss">:provider</span>               <span class="o">=&gt;</span> <span class="ss">:AWS</span><span class=
+"p">,</span>
+  <span class="ss">:aws_access_key_id</span>      <span class="o">=&gt;</span> <span class=
+"no">AWS_ACCESS_KEY_ID</span><span class="p">,</span>
+  <span class="ss">:aws_secret_access_key</span>  <span class="o">=&gt;</span> <span class=
+"no">AWS_SECRET_ACCESS_KEY</span><span class="p">,</span>
   <span class="ss">:region</span>                 <span class="o">=&gt;</span> <span class="no">EC2_REGION</span>
 <span class="p">})</span>
 
-<span class="n">server</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">({</span>
-  <span class="ss">:private_key_path</span>   <span class="o">=&gt;</span> <span class="s2">"~/.ec2/default.pem"</span><span class="p">,</span> 
-  <span class="ss">:public_key_path</span>    <span class="o">=&gt;</span> <span class="s2">"~/.ec2/default.pem.pub"</span><span class="p">,</span> 
-  <span class="ss">:availability_zone</span>  <span class="o">=&gt;</span> <span class="no">EC2_AVAILABILITY_ZONE</span><span class="p">,</span> 
-  <span class="ss">:username</span>           <span class="o">=&gt;</span> <span class="s2">"ubuntu"</span><span class="p">,</span> 
-  <span class="ss">:image_id</span>           <span class="o">=&gt;</span> <span class="no">STACKATO_V207_AMI</span><span class="p">,</span>
-  <span class="ss">:flavor_id</span>          <span class="o">=&gt;</span> <span class="s2">"m1.small"</span><span class="p">,</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">connection</span><span class=
+"o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">bootstrap</span><span class=
+"p">({</span>
+  <span class="ss">:private_key_path</span>   <span class="o">=&gt;</span> <span class=
+"s2">"~/.ec2/default.pem"</span><span class="p">,</span> 
+  <span class="ss">:public_key_path</span>    <span class="o">=&gt;</span> <span class=
+"s2">"~/.ec2/default.pem.pub"</span><span class="p">,</span> 
+  <span class="ss">:availability_zone</span>  <span class="o">=&gt;</span> <span class=
+"no">EC2_AVAILABILITY_ZONE</span><span class="p">,</span> 
+  <span class="ss">:username</span>           <span class="o">=&gt;</span> <span class="s2">"ubuntu"</span><span class=
+"p">,</span> 
+  <span class="ss">:image_id</span>           <span class="o">=&gt;</span> <span class=
+"no">STACKATO_V207_AMI</span><span class="p">,</span>
+  <span class="ss">:flavor_id</span>          <span class="o">=&gt;</span> <span class=
+"s2">"m1.small"</span><span class="p">,</span>
   <span class="ss">:bits</span>               <span class="o">=&gt;</span> <span class="mi">64</span>
 <span class="p">})</span>
 
-<span class="n">server</span><span class="o">.</span><span class="n">ssh</span><span class="p">(</span><span class="o">&lt;&lt;</span><span class="no">EOF</span>
+<span class="n">server</span><span class="o">.</span><span class="n">ssh</span><span class="p">(</span><span class=
+"o">&lt;&lt;</span><span class="no">EOF</span>
 <span class="sh">curl -k "https://api.$(hostname).local/stackato/license" \</span>
-<span class="sh">     -d "email=#{STACKATO_EMAIL}&amp;password=#{STACKATO_PASSWORD}&amp;unix_password=#{STACKATO_PASSWORD}"</span>
+<span class=
+"sh">     -d "email=#{STACKATO_EMAIL}&amp;password=#{STACKATO_PASSWORD}&amp;unix_password=#{STACKATO_PASSWORD}"</span>
 <span class="no">EOF</span>
 <span class="p">)</span>
-</pre></div>
+</pre>
+      </div>
 
-<h3 id="chef">Chef</h3>
+      <h3 id="chef">Chef</h3>
 
-<h3 id="cloud_init">CloudInit</h3>
+      <h3 id="cloud_init">CloudInit</h3>
 
-<p>cloud-init is a highly configurable system for handling early initialization of a cloud instance. More information on cloud-init can be found at the <a href="https://launchpad.net/cloud-init">project's launchpad</a>. There is also <a href="http://www.youtube.com/watch?v=-zL3BdbKyGY">a screencast</a> covering the cloud-config portion of cloud-init on the <a href="http://www.youtube.com/user/ubuntucloud">ubuntucloud youtube channel</a>.</p>
+      <p>cloud-init is a highly configurable system for handling early initialization of a cloud instance. More
+      information on cloud-init can be found at the <a href="https://launchpad.net/cloud-init">project's launchpad</a>.
+      There is also <a href="http://www.youtube.com/watch?v=-zL3BdbKyGY">a screencast</a> covering the cloud-config
+      portion of cloud-init on the <a href="http://www.youtube.com/user/ubuntucloud">ubuntucloud youtube
+      channel</a>.</p>
 
-<h4 id="cloud_init_data_sources">Data Sources</h4>
+      <h4 id="cloud_init_data_sources">Data Sources</h4>
 
-<p>The cloud-init package supports searching multiple "Data Sources" for information that can be used to configure a particular cloud instance. The list of potential sources is configured in the <code>datasource_list</code> key, with the first entry found to be valid becoming the data source for that run. This value, as well as any detailed configuration in <code>datasource</code>, should be set locally in <code>cloud.cfg</code> or injected early via some other means (like the kernel cmdline). Any Ubuntu based EC2 AMIs will contain EC2 as a data source by default, otherwise the list will contain <code>["NoCloud", "ConfigDrive", "OVF", "MAAS"]</code>.</p>
+      <p>The cloud-init package supports searching multiple "Data Sources" for information that can be used to
+      configure a particular cloud instance. The list of potential sources is configured in the
+      <code>datasource_list</code> key, with the first entry found to be valid becoming the data source for that run.
+      This value, as well as any detailed configuration in <code>datasource</code>, should be set locally in
+      <code>cloud.cfg</code> or injected early via some other means (like the kernel cmdline). Any Ubuntu based EC2
+      AMIs will contain EC2 as a data source by default, otherwise the list will contain <code>["NoCloud",
+      "ConfigDrive", "OVF", "MAAS"]</code>.</p>
 
-<p><em>Note: If the <code>datasources_list</code> value from <code>/etc/cloud/cloud.cfg</code> is not being used, check for an <code>/etc/cloud/cloud.cfg.d/90_dpkg.cfg</code> and run <code>dpkg-reconfigure cloud-init</code> if found.</em></p>
+      <p><em>Note: If the <code>datasources_list</code> value from <code>/etc/cloud/cloud.cfg</code> is not being used,
+      check for an <code>/etc/cloud/cloud.cfg.d/90_dpkg.cfg</code> and run <code>dpkg-reconfigure cloud-init</code> if
+      found.</em></p>
 
-<p>Note: Selecting the "Ec2" data source may result in lengthy boot times if the EC2 metadata API is unavailable. If you firewall off the metadata API for security purposes and do not wish to use it with cloud-init, make sure to edit <code>datasource_list</code>. For a convenient method of removing access to the metadata API after cloud-init has retrieved any necessary data, enable the <code>disable-ec2-metadata</code> module.</p>
+      <p>Note: Selecting the "Ec2" data source may result in lengthy boot times if the EC2 metadata API is unavailable.
+      If you firewall off the metadata API for security purposes and do not wish to use it with cloud-init, make sure
+      to edit <code>datasource_list</code>. For a convenient method of removing access to the metadata API after
+      cloud-init has retrieved any necessary data, enable the <code>disable-ec2-metadata</code> module.</p>
 
-<p>If you are using a deployment platform that provides some level of EC2 compatibility then you may want to ensure that the metadata IP (169.254.169.254) is reachable and that the HTTP endpoints (ex: /2009-04-04/meta-data/instance-id) are available ahead of time. For additional configurability, you also have the option of manually setting <code>metadata_urls</code> on the data source:</p>
+      <p>If you are using a deployment platform that provides some level of EC2 compatibility then you may want to
+      ensure that the metadata IP (169.254.169.254) is reachable and that the HTTP endpoints (ex:
+      /2009-04-04/meta-data/instance-id) are available ahead of time. For additional configurability, you also have the
+      option of manually setting <code>metadata_urls</code> on the data source:</p>
 
-<div class="highlight"><pre><span class="l-Scalar-Plain">datasource</span><span class="p-Indicator">:</span>
+      <div class="highlight">
+        <pre>
+<span class="l-Scalar-Plain">datasource</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">Ec2</span><span class="p-Indicator">:</span>
     <span class="l-Scalar-Plain">metadata_urls</span><span class="p-Indicator">:</span>
       <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">http://169.254.169.254:80</span>
       <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">http://instance-data:8773</span>
-</pre></div>
+</pre>
+      </div>
 
-<p>While CloudStack provides a metadata API with similarities to the one provided by EC2, there are notable differences that make it incompatible. In particular, the metadata API will be available via the default gateway and thus cannot be sanely configured ahead of time. There is a seperate "CloudStack" datasource that handles these differences.</p>
+      <p>While CloudStack provides a metadata API with similarities to the one provided by EC2, there are notable
+      differences that make it incompatible. In particular, the metadata API will be available via the default gateway
+      and thus cannot be sanely configured ahead of time. There is a seperate "CloudStack" datasource that handles
+      these differences.</p>
 
-<p>Valid data sources:</p>
+      <p>Valid data sources:</p>
 
-<ul>
-<li>
-<strong>NoCloud</strong>: reads info from <code>/var/lib/cloud/seed</code> only</li>
-<li>
-<strong>ConfigDrive</strong>: reads data from OpenStack Config Drive</li>
-<li>
-<strong>OVF</strong>: reads data from OVF Transports</li>
-<li>
-<strong>MAAS</strong>: reads data from Ubuntu MAAS</li>
-<li>
-<strong>EC2</strong>: reads data from EC2 metadata service</li>
-<li>
-<strong>CloudStack</strong>: reads data from CloudStack metadata service</li>
-</ul><h4 id="cloud_init_frequency">Frequency</h4>
+      <ul>
+        <li><strong>NoCloud</strong>: reads info from <code>/var/lib/cloud/seed</code> only</li>
 
-<p>Scripts and configuration directives may be acted upon with the following frequencies:</p>
+        <li><strong>ConfigDrive</strong>: reads data from OpenStack Config Drive</li>
 
-<ol>
-<li>once <strong>ever</strong>
-</li>
-<li>once per instance</li>
-<li>once per boot (always)</li>
-</ol><p>You can usually assume that the default frequency for an action is once per instance. On every run, cloud-init will check what the current "instance id" is and compare this value with the previously recorded id. This makes it easy to do things like clone an existing system and ensure that a base set of actions are performed when the clone comes online. You may, for example, delete any pre-existing chef configuration and re-register as a new client.</p>
+        <li><strong>OVF</strong>: reads data from OVF Transports</li>
 
-<p><em>Warning: On EC2, a full shutdown will result in your VM receiving a new instance-id.</em></p>
+        <li><strong>MAAS</strong>: reads data from Ubuntu MAAS</li>
 
-<p>The following modules, however, are loaded with a default frequency of "always":</p>
+        <li><strong>EC2</strong>: reads data from EC2 metadata service</li>
 
-<ul>
-<li>bootcmd</li>
-<li>disable-ec2-metadata</li>
-<li>final-message</li>
-<li>resizefs</li>
-<li>scripts-per-boot</li>
-<li>update_etc_hosts</li>
-<li>update_hostname</li>
-</ul><p>Note that without accompanying configuration, a module that is loaded on each boot will still have no effect on the system.</p>
+        <li><strong>CloudStack</strong>: reads data from CloudStack metadata service</li>
+      </ul>
 
-<p>It is possible to change the run frequency of a module. Under the module section where it is defined, replace the string name with an array of <code>[name, frequency, arguments]</code>. Within this context, frequency must be named <code>once-per-instance</code>, <code>always</code>, or <code>once</code>.</p>
+      <h4 id="cloud_init_frequency">Frequency</h4>
 
-<h4 id="cloud_init_order_of_execution">Order of Execution</h4>
+      <p>Scripts and configuration directives may be acted upon with the following frequencies:</p>
 
-<p>The cloud-init package is run in several stages during bootstrap:</p>
+      <ol>
+        <li>once <strong>ever</strong></li>
 
-<ul>
-<li>root filesystem is mounted</li>
-<li>cloud-init-local runs (<strong>cloud-init start-local</strong>)
+        <li>once per instance</li>
 
-<ul>
-<li>purge any cached data and metadata</li>
-<li>if a valid (non-network) data source is found then perform a normal start using that data source</li>
-</ul>
-</li>
-<li>all configured network interfaces come up</li>
-<li>cloud-init runs (<strong>cloud-init start</strong>)
+        <li>once per boot (always)</li>
+      </ol>
 
-<ul>
-<li>check the kernel cmdline for a <code>cloud-config-url</code> parameter. If present, fetch and save the content of this URL to <code>/etc/cloud/cloud.cfg.d/91_kernel_cmdline_url.cfg</code>
-</li>
-<li>ensure /var/lib/cloud and subdirectories are created</li>
-<li>set the current instance id</li>
-<li>update cached user data and metadata</li>
-<li>the <code>cloud_init_modules</code> value from cloud-config is read and modules are run in the order that they appear. these are, by default:
+      <p>You can usually assume that the default frequency for an action is once per instance. On every run, cloud-init
+      will check what the current "instance id" is and compare this value with the previously recorded id. This makes
+      it easy to do things like clone an existing system and ensure that a base set of actions are performed when the
+      clone comes online. You may, for example, delete any pre-existing chef configuration and re-register as a new
+      client.</p>
 
-<ol>
-<li>bootcmd</li>
-<li>resizefs</li>
-<li>set_hostname</li>
-<li>update_hostname</li>
-<li>update_etc_hosts</li>
-<li>ca-certs</li>
-<li>rsyslog</li>
-<li>ssh</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>any remaining filesystems will be mounted by this point</li>
-<li>rsyslog will be running by this point</li>
-<li>cloud-config runs (<strong>cloud-init-cfg all config</strong>)
+      <p><em>Warning: On EC2, a full shutdown will result in your VM receiving a new instance-id.</em></p>
 
-<ul>
-<li>the <code>cloud_config_modules</code> value from cloud-config is read and modules are run in the order that they appear. these are, by default:
+      <p>The following modules, however, are loaded with a default frequency of "always":</p>
 
-<ol>
-<li>mounts</li>
-<li>ssh-import-id</li>
-<li>locale</li>
-<li>set-passwords</li>
-<li>grub-dpkg</li>
-<li>apt-pipelining</li>
-<li>apt-update-upgrade</li>
-<li>landscape</li>
-<li>timezone</li>
-<li>puppet</li>
-<li>chef</li>
-<li>salt-minion</li>
-<li>mcollective</li>
-<li>disable-ec2-metadata</li>
-<li>runcmd</li>
-<li>byobu</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>all runlevel rc scripts run</li>
-<li>cloud-final runs (<strong>cloud-init-cfg all final</strong>)
+      <ul>
+        <li>bootcmd</li>
+        <li>disable-ec2-metadata</li>
+        <li>final-message</li>
+        <li>resizefs</li>
+        <li>scripts-per-boot</li>
+        <li>update_etc_hosts</li>
+        <li>update_hostname</li>
+      </ul>
 
-<ul>
-<li>the <code>cloud_final_modules</code> value from cloud-config is read and modules are run in the order that they appear. these are, by default:
+      <p>Note that without accompanying configuration, a module that is loaded on each boot will still have no effect
+      on the system.</p>
 
-<ol>
-<li>rightscale_userdata</li>
-<li>scripts-per-once</li>
-<li>scripts-per-boot</li>
-<li>scripts-per-instance</li>
-<li>scripts-user</li>
-<li>keys-to-console</li>
-<li>phone-home</li>
-<li>final-message</li>
-</ol>
-</li>
-</ul>
-</li>
-</ul><h4 id="risks">risks</h4>
+      <p>It is possible to change the run frequency of a module. Under the module section where it is defined, replace
+      the string name with an array of <code>[name, frequency, arguments]</code>. Within this context, frequency must
+      be named <code>once-per-instance</code>, <code>always</code>, or <code>once</code>.</p>
 
-<p>Please be aware that the metadata service has no concept of access control. An application running on a DEA node has the same level of access to your metadata as anything else running on that machine. There are multiple methods of hiding sensitive information from prying eyes, such as include-once directives that point to single-use URLs. The easiest method by far, however, is enabling the <code>disable_ec2_metadata</code> option in your cloud-config. The disable_ec2_metadata module will run the following: <code>route add -host 169.254.169.254 reject</code>.</p>
+      <h4 id="cloud_init_order_of_execution">Order of Execution</h4>
 
-<h2 id="monitoring">Monitoring</h2>
+      <p>The cloud-init package is run in several stages during bootstrap:</p>
 
-<h3 id="ganglia">Ganglia</h3>
+      <ul>
+        <li>root filesystem is mounted</li>
 
-<h2 id="auto_scaling">Auto-Scaling</h2>
+        <li>cloud-init-local runs (<strong>cloud-init start-local</strong>)
 
-<h2 id="troubleshooting">Troubleshooting</h2>
+          <ul>
+            <li>purge any cached data and metadata</li>
 
-<h3 id="application_crash">Application Crash</h3>
+            <li>if a valid (non-network) data source is found then perform a normal start using that data source</li>
+          </ul>
+        </li>
 
-<p>If an application crashes, the linux container for that app sticks around for about an hour by default before getting cleaned up. This allows you to ssh into the container and perform any necessary debugging. Logs will also be available to you this way, even if they are not directly available via the dashboard any longer.</p>
+        <li>all configured network interfaces come up</li>
 
-<blockquote>
-<p>Note: you can access an app as it's owner, or as an admin with the --group='owner@email' option to the stackato CLI. The way option ordering works, the group option must come before the ssh command:</p>
+        <li>cloud-init runs (<strong>cloud-init start</strong>)
 
-<pre><code>stackato --group='owner@email.com' ssh appname
-</code></pre>
-</blockquote>
+          <ul>
+            <li>check the kernel cmdline for a <code>cloud-config-url</code> parameter. If present, fetch and save the
+            content of this URL to <code>/etc/cloud/cloud.cfg.d/91_kernel_cmdline_url.cfg</code></li>
 
-<p>In the scenario of an application crash:</p>
+            <li>ensure /var/lib/cloud and subdirectories are created</li>
 
-<ol>
-<li>The DEA node detects the unexpected exit and broadcasts a message to NATS</li>
-<li>Routers remove the crashed app from the routing table</li>
-<li>The Health Manager notifies the Cloud Controller</li>
-<li>The Cloud Controller re-starts the instance</li>
-</ol><h3 id="dea_crash">DEA Crash</h3>
+            <li>set the current instance id</li>
 
-<p>In the scenario of a DEA node crash:</p>
+            <li>update cached user data and metadata</li>
 
-<ol>
-<li>Applications handled by the DEA become unavailable</li>
-<li>The Health Manager notices the missing instances and notifies the Cloud Controller</li>
-<li>The Cloud Controller requests DEA nodes for the apps</li>
-<li>As DEA nodes reply, application instances will be started on these new DEA nodes</li>
-</ol><p>Note that as part of the Prealloc/DEA init that occurs when starting the DEA service, previously existing linux containers are cleaned up and removed. If you need any of that data for debugging or analysis then you will want to copy it to another location than /lxc/containers or /mnt/lxc/containers.</p>
+            <li>the <code>cloud_init_modules</code> value from cloud-config is read and modules are run in the order
+            that they appear. these are, by default:
 
-<h3>Inotify</h3>
+              <ol>
+                <li>bootcmd</li>
 
-<pre><code>fs.inotify.max_user_instances = 4096
+                <li>resizefs</li>
+
+                <li>set_hostname</li>
+
+                <li>update_hostname</li>
+
+                <li>update_etc_hosts</li>
+
+                <li>ca-certs</li>
+
+                <li>rsyslog</li>
+
+                <li>ssh</li>
+              </ol>
+            </li>
+          </ul>
+        </li>
+
+        <li>any remaining filesystems will be mounted by this point</li>
+
+        <li>rsyslog will be running by this point</li>
+
+        <li>cloud-config runs (<strong>cloud-init-cfg all config</strong>)
+
+          <ul>
+            <li>the <code>cloud_config_modules</code> value from cloud-config is read and modules are run in the order
+            that they appear. these are, by default:
+
+              <ol>
+                <li>mounts</li>
+
+                <li>ssh-import-id</li>
+
+                <li>locale</li>
+
+                <li>set-passwords</li>
+
+                <li>grub-dpkg</li>
+
+                <li>apt-pipelining</li>
+
+                <li>apt-update-upgrade</li>
+
+                <li>landscape</li>
+
+                <li>timezone</li>
+
+                <li>puppet</li>
+
+                <li>chef</li>
+
+                <li>salt-minion</li>
+
+                <li>mcollective</li>
+
+                <li>disable-ec2-metadata</li>
+
+                <li>runcmd</li>
+
+                <li>byobu</li>
+              </ol>
+            </li>
+          </ul>
+        </li>
+
+        <li>all runlevel rc scripts run</li>
+
+        <li>cloud-final runs (<strong>cloud-init-cfg all final</strong>)
+
+          <ul>
+            <li>the <code>cloud_final_modules</code> value from cloud-config is read and modules are run in the order
+            that they appear. these are, by default:
+
+              <ol>
+                <li>rightscale_userdata</li>
+
+                <li>scripts-per-once</li>
+
+                <li>scripts-per-boot</li>
+
+                <li>scripts-per-instance</li>
+
+                <li>scripts-user</li>
+
+                <li>keys-to-console</li>
+
+                <li>phone-home</li>
+
+                <li>final-message</li>
+              </ol>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4 id="risks">risks</h4>
+
+      <p>Please be aware that the metadata service has no concept of access control. An application running on a DEA
+      node has the same level of access to your metadata as anything else running on that machine. There are multiple
+      methods of hiding sensitive information from prying eyes, such as include-once directives that point to
+      single-use URLs. The easiest method by far, however, is enabling the <code>disable_ec2_metadata</code> option in
+      your cloud-config. The disable_ec2_metadata module will run the following: <code>route add -host 169.254.169.254
+      reject</code>.</p>
+
+      <h2 id="monitoring">Monitoring</h2>
+
+      <h3 id="ganglia">Ganglia</h3>
+
+      <h2 id="auto_scaling">Auto-Scaling</h2>
+
+      <h2 id="troubleshooting">Troubleshooting</h2>
+
+      <h3 id="application_crash">Application Crash</h3>
+
+      <p>If an application crashes, the linux container for that app sticks around for about an hour by default before
+      getting cleaned up. This allows you to ssh into the container and perform any necessary debugging. Logs will also
+      be available to you this way, even if they are not directly available via the dashboard any longer.</p>
+
+      <blockquote>
+        <p>Note: you can access an app as it's owner, or as an admin with the --group='owner@email' option to the
+        stackato CLI. The way option ordering works, the group option must come before the ssh command:</p>
+        <pre>
+<code>stackato --group='owner@email.com' ssh appname
+</code>
+</pre>
+      </blockquote>
+
+      <p>In the scenario of an application crash:</p>
+
+      <ol>
+        <li>The DEA node detects the unexpected exit and broadcasts a message to NATS</li>
+
+        <li>Routers remove the crashed app from the routing table</li>
+
+        <li>The Health Manager notifies the Cloud Controller</li>
+
+        <li>The Cloud Controller re-starts the instance</li>
+      </ol>
+
+      <h3 id="dea_crash">DEA Crash</h3>
+
+      <p>In the scenario of a DEA node crash:</p>
+
+      <ol>
+        <li>Applications handled by the DEA become unavailable</li>
+
+        <li>The Health Manager notices the missing instances and notifies the Cloud Controller</li>
+
+        <li>The Cloud Controller requests DEA nodes for the apps</li>
+
+        <li>As DEA nodes reply, application instances will be started on these new DEA nodes</li>
+      </ol>
+
+      <p>Note that as part of the Prealloc/DEA init that occurs when starting the DEA service, previously existing
+      linux containers are cleaned up and removed. If you need any of that data for debugging or analysis then you will
+      want to copy it to another location than /lxc/containers or /mnt/lxc/containers.</p>
+
+      <h3>Inotify</h3>
+      <pre>
+<code>fs.inotify.max_user_instances = 4096
 fs.inotify.max_user_watches = 32768
 fs.inotify.max_queued_events = 65536
-</code></pre>
-      </section>
-    </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/ttilley">ttilley</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
-  </body>
+</code>
+</pre>
+    </section>
+  </div>
+
+  <footer>
+    <p>Project maintained by <a href="https://github.com/ttilley">ttilley</a></p>
+
+    <p>Hosted on GitHub Pages — Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+  </footer>
+  <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+</body>
 </html>
+
