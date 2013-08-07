@@ -1,5 +1,7 @@
 # Stackato Essentials #
 
+[![endorse](https://api.coderwall.com/ttilley/endorsecount.png)](https://coderwall.com/ttilley)
+
 My personal goal with this document is to provide a somewhat more gentle introduction to Cloud Foundry and Stackato than you might otherwise receive, as well as to shine light on components and functionality that might not be documented in sufficient detail elsewhere.
 
 If you find any of the information here useful, you can thank me by [providing feedback](https://github.com/ttilley/StackatoEssentials/issues). *Please* feel free to fork, improve, and submit pull requests.
